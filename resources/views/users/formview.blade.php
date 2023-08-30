@@ -7,10 +7,8 @@
             @include('users.card')
         </aside>
         <div class="sm:col-span-2 mt-4">
-            {{-- 投稿用ページを別に設ける 
-            retuen view('users.formview') --}}
-            {{-- 投稿一覧 --}}
-            @include('projects.projects')
+            {{-- 投稿用ページを別に設ける--}} 
+            @include('projects.form')
         </div>
     </div>
 @endsection

@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsersController; // 追記
+use App\Http\Controllers\ProjectsController; //追記
 
 /*
 |--------------------------------------------------------------------------
@@ -15,13 +16,9 @@ use App\Http\Controllers\UsersController; // 追記
 |
 */
 
-Route::get('/', function () {
-    return view('dashboard');
-});
+Route::get('/', [ProjectsController::class, 'index']);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::get('/dashboard',[ProjectsController::class, 'index'])->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -33,4 +30,5 @@ require __DIR__.'/auth.php';
 
 Route::group(['middleware' => ['auth']], function () {                                    // 追記
     Route::resource('users', UsersController::class, ['only' => ['index', 'show']]);     // 追記
+    Route::resource('projects', ProjectsController::class, ['only' => ['store', 'destroy']]);
 });
