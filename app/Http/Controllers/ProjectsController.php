@@ -5,18 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Project;
+use App\Models\User;
 
 class ProjectsController extends Controller
 {
     public function index()
-    {
+     {
         $data = [];
         if (\Auth::check()) { // 認証済みの場合
-            // 認証済みユーザを取得
+            // 認証済みユーザを取得 
             $user = \Auth::user();
-            // ユーザの投稿の一覧を作成日時の降順で取得
-            // （後のChapterで他ユーザの投稿も取得するように変更しますが、現時点ではこのユーザの投稿のみ取得します）
-            $projects = $user->projects()->orderBy('created_at', 'desc')->paginate(10);
+            // ユーザとフォロー中ユーザの投稿の一覧を作成日時の降順で取得
+            $projects = $user->feed_projects()->orderBy('created_at', 'desc')->paginate(10);
             $data = [
                 'user' => $user,
                 'projects' => $projects,
@@ -58,5 +58,19 @@ class ProjectsController extends Controller
         return back()
             ->with('Delete Failed');
     }
+    
+    /*public function index1()
+     {
+        // プロジェクト一覧を取得
+        $projects1 = Project::all();         // 追加
+
+        // メッセージ一覧ビューでそれを表示
+        return view('projects.index1', [     // 追加
+            'projects1' => $projects1,
+        ]);                                 // 追加
+    }
+    */
+    
+    
 }
 

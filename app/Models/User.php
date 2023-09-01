@@ -55,7 +55,7 @@ class User extends Authenticatable
      */
     public function loadRelationshipCounts()
     {
-        $this->loadCount('projects', 'followings', 'followers');
+        $this->loadCount('projects', 'followings', 'followers','favorites');
     }
     
     /**
@@ -122,5 +122,71 @@ class User extends Authenticatable
     {
         return $this->followings()->where('follow_id', $userId)->exists();
     }
+    
+     /**
+     * このユーザとフォロー中ユーザの投稿に絞り込む。
+     */
+    public function feed_projects()
+    {
+        // このユーザがフォロー中のユーザのidを取得して配列にする
+        $userIds = $this->followings()->pluck('users.id')->toArray();
+        // このユーザのidもその配列に追加
+        $userIds[] = $this->id;
+        // それらのユーザが所有する投稿に絞り込む
+        return Project::whereIn('user_id', $userIds);
+    }
+    
+  /**
+     * このユーザがお気に入りに入れた投稿。（Micropostモデルとの関係を定義）
+     */
+    public function favorites()
+    {
+        return $this->belongsToMany(Project::class, 'favorites','user_id','project_id')->withTimestamps();
+    }
+
+    /**
+     * お気に入り登録。
+     */
+    public function favorite($projectId)
+    {
+        $exist = $this->is_favoriting($projectId);
+       
+        if ($exist) {
+            return false;
+        } else {
+            $this->favorites()->attach($projectId);
+            return true;
+        }
+    }
+    /**
+     * お気に入り解除する。
+     * 
+     * @param  int $usereId
+     * @return bool
+     */
+    public function unfavorite($projectId)
+    {
+        $exist = $this->is_favoriting($projectId);
+        
+        
+        if ($exist) {
+            $this->favorites()->detach($projectId);
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * 指定された$userIdのユーザをこのユーザがフォロー中であるか調べる。フォロー中ならtrueを返す。
+     * 
+     * @param  int $userId
+     * @return bool
+     */
+    public function is_favoriting($projectId)
+    {
+        return $this->favorites()->where('project_id', $projectId)->exists();
+    }
+
 }
 
