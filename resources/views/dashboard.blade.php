@@ -6,14 +6,21 @@
             <aside class="mt-4">
                 {{-- カレンダー --}}
                 @include('calendar')
-                 {{-- タブ --}}  
-                 @include('users.navtabsf')
+                <div class="my-30">
+                {{-- 投稿フォーム --}}
+                <h2 class="mt-3 text-align: center; font-weight: 700 text-xl text-indigo-900">新しくプロジェクトを投稿する</h2>
+                @include('projects.form')
+                </div>
             </aside>
             <div class="sm:col-span-2">
-                {{-- 投稿フォーム --}}
-                @include('projects.form')
+                
+                <div>
+                <h2>最新のプロジェクト</h2>
+                 {{-- 検索フォーム --}}
+                @include('users.search')
                 {{-- 投稿一覧 --}}
-                @include('projects.projects')
+                @include('projects.projectsall')
+                </div>
             </div>
         </div>
     @else

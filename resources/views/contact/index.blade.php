@@ -2,7 +2,7 @@
  
 @section('content')
 
-    <div class="flex flex-col text-center w-full mb-12">
+    <div class="flex flex-col  w-full mb-12">
       <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">お問い合わせ</h1>
     </div>
     
@@ -37,7 +37,7 @@
     @if ($errors->has('body'))
         <p class="error-message">{{ $errors->first('body') }}</p>
     @endif
-    <div class="flex justify-center">
+    <div class="flex ">
     <button  type="submit" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mt-3">
         入力内容確認
     </button>

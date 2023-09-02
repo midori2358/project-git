@@ -10,6 +10,14 @@ class Project extends Model
     use HasFactory;
     
     protected $fillable = ['content'];
+    
+    /**
+     * このプロジェクトに関係するモデルの件数をロードする。
+     */
+    public function loadRelationshipCounts()
+    {
+        $this->loadCount('favorite_users');
+    }
 
     /**
      * この投稿を所有するユーザ。（ Userモデルとの関係を定義）
@@ -24,7 +32,9 @@ class Project extends Model
      */
      public function favorite_users()
      {
-         return $this->belongsTo(User::class,'favorites','project_id','user_id')->withTimestamps();
+         return $this->belongsToMany(User::class,'favorites','project_id','user_id')->withTimestamps();
      }
+     
+    
      
 }

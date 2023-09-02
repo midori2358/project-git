@@ -51,6 +51,13 @@ class User extends Authenticatable
     }
     
     /**
+     * このユーザのプロフィール。（ Profileモデルとの関係を定義）
+     */
+    public function myprofile()
+    {
+        return $this->hasMany(Profile::class);
+    }
+    /**
      * このユーザに関係するモデルの件数をロードする。
      */
     public function loadRelationshipCounts()
@@ -178,7 +185,7 @@ class User extends Authenticatable
     }
     
     /**
-     * 指定された$userIdのユーザをこのユーザがフォロー中であるか調べる。フォロー中ならtrueを返す。
+     * 指定された$projectIdのプロジェクトをこのユーザがお気に入り中であるか調べる。そうであればならtrueを返す。
      * 
      * @param  int $userId
      * @return bool

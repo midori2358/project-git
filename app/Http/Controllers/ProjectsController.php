@@ -59,18 +59,56 @@ class ProjectsController extends Controller
             ->with('Delete Failed');
     }
     
-    /*public function index1()
-     {
-        // プロジェクト一覧を取得
-        $projects1 = Project::all();         // 追加
+    
+     public function favorite_users($id)
+    {
+        // プロジェクト全件取得
+        $project = Project::findOrFail($id);
+        
+        $user = \Auth::user();
 
-        // メッセージ一覧ビューでそれを表示
-        return view('projects.index1', [     // 追加
-            'projects1' => $projects1,
-        ]);                                 // 追加
+        // ユーザのお気に入り一覧を取得
+        $favoriteusers = $project->favorite_users()->paginate(10);
+
+        // お気に入り一覧ビューでそれらを表示
+        return view('users.favoriteusers', [
+            'project' => $project,
+            'favoriteusers' => $favoriteusers,
+            'user' => $user,
+        ]);
     }
-    */
+    
+    //dashboard表示用全ユーザ、全プロジェクト
+    public function index1()
+     {
+        $data1 = [];
+        if (\Auth::check()) { // 認証済みの場合
+            // 認証済みユーザを取得 
+            $user = \Auth::user();
+            // 全件取得の降順
+            $projects1 = Project::paginate(20)->sortByDesc("id");
+            $data1 = [
+                'user' => $user,
+                'projects1' => $projects1,
+            ];
+        }
+        
+        // dashboardビューでそれらを表示
+        return view('dashboard', $data1);
+    }
     
     
-}
+   public function projectindex(Request $request)
+    {
+    $search = $request->input('search');
+    $query = Article::query();
 
+    if (!empty($search)) {
+        $query->where('content', 'LIKE', "%{$search}%");
+    }
+
+    $articles = $query->get()->sortByDesc('created_at');
+
+    return view('users.search', ['articles' => $articles]);
+    }
+}
