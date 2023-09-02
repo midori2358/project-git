@@ -5,6 +5,10 @@
         <aside class="mt-4">
             {{-- ユーザ情報 --}}
             @include('users.card')
+   
+            <div>
+             <a class="btn btn-outline btn-secondary mt-2 mb-2 flex-center normal-case"href="mailto:address">{{ $user->email }}へメールを送る</a>
+             </div>
             
              @if (Auth::id() == $user->id)
              {{-- プロフィールページへのリンク --}}                                                   

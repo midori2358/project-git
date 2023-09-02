@@ -16,8 +16,6 @@
                 
                 <div>
                 <h2>最新のプロジェクト</h2>
-                 {{-- 検索フォーム --}}
-                @include('users.search')
                 {{-- 投稿一覧 --}}
                 @include('projects.projectsall')
                 </div>

@@ -62,6 +62,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('myprofile/create', [MyprofileController::class, 'create'])->name('myprofile.create');
         Route::get('myprofile/{id}/edit', [MyprofileController::class, 'edit'])->name('myprofile.edit');
         */
+        
     
     
     Route::resource('users', UsersController::class, ['only' => ['index', 'show']]);     
@@ -76,6 +77,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::delete('unfavorite', [FavoritesController::class, 'destroy'])->name('favorites.unfavorite'); // 追加
         Route::get('favoriteusers', [ProjectsController::class, 'favorite_users'])->name('projects.favoriteusers');            // 追加
     });     
+    
     Route::get('/calendar', function () {return view('calendar');});// カレンダー表示
     // イベント登録処理
     Route::post('/scheduleadd', [ScheduleController::class, 'scheduleAdd'])->name('scheduleadd');
@@ -83,9 +85,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/scheduleget', [ScheduleController::class, 'scheduleGet'])->name('scheduleget');
    
    
-   
-   
-    
+    //Route::get('users', [UsersController::class, 'usersearch'])->name('users.usersearch');   
    
 });
 

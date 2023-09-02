@@ -1,5 +1,13 @@
 <div class="mt-4">
     @if (isset($projects1))
+    
+<div>
+  <form action="{{ route('dashboard') }}" method="GET" class="form-inline my-2 my-lg-0 ml-2　outline-solid">
+    <input type="text" name="keyword" value="{{ $keyword }}" class="w-50 py-2 border-b focus:outline-none focus:border-b-2 focus:border-indigo-500 placeholder-gray-500 placeholder-opacity-50" placeholder="キーワード">
+    <input type="submit" value="検索" class="btn btn-info">
+  </form>
+</div>
+
         <ul class="list-none">
             @foreach ($projects1 as $project)
                 <li class="flex items-start gap-x-2 mb-4">

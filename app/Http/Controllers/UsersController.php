@@ -10,17 +10,22 @@ use App\Models\User;                                        // 追加
 class UsersController extends Controller
 {
     
-     public function index()                                 // 追加       
-    {                                                       // 追加
-        // ユーザ一覧をidの降順で取得
-        $users = User::orderBy('id', 'desc')->paginate(10); // 追加
+     public function index(Request $request)                                      
+    {
+        $keyword = $request->input('keyword');
 
-        // ユーザ一覧ビューでそれを表示
-        return view('users.index', [                        // 追加
-            'users' => $users,                              // 追加
-        ]);                                                 // 追加
-    }                                                       // 追加
-    
+        $query = User::query();
+
+        if(!empty($keyword)) {
+            $query->where('name', 'LIKE', "%{$keyword}%");
+        }
+
+        $users = $query->get();
+
+        return view('users.index', compact('users', 'keyword'));
+    }
+                                                   
+                                                   
     public function show($id)                               // 追加
     { 
          // idの値でユーザを検索して取得
@@ -32,10 +37,13 @@ class UsersController extends Controller
          // ユーザーの投稿一覧を作成日時の降順で取得
         $projects = $user->projects()->orderBy('created_at', 'desc')->paginate(10);
 
+        $email = User::pluck('email');
+        
         // ユーザ詳細ビューでそれを表示
         return view('users.show', [
             'user' => $user,
             'projects' => $projects,
+            'email' => $email,
         ]);                                                 
     }   
     
@@ -104,18 +112,6 @@ class UsersController extends Controller
             'favorites' => $favorites,
         ]);
     }
-    
-    public function usersearch(Request $request)
-    {
-        $articles = Project::orderBy('created_at', 'asc')->where(function ($query) {
 
-            // 検索機能
-            if ($search = request('search')) {
-                $query->where('name', 'LIKE', "%{$search}%");
-            }
-
-            // 8投稿毎にページ移動
-        })->paginate(8);
-}
     
 }

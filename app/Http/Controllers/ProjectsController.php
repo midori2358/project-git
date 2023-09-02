@@ -79,23 +79,35 @@ class ProjectsController extends Controller
     }
     
     //dashboard表示用全ユーザ、全プロジェクト
-    public function index1()
+    public function index1(Request $request)
      {
         $data1 = [];
         if (\Auth::check()) { // 認証済みの場合
-            // 認証済みユーザを取得 
-            $user = \Auth::user();
-            // 全件取得の降順
-            $projects1 = Project::paginate(20)->sortByDesc("id");
-            $data1 = [
+        // 認証済みユーザを取得 
+         $user = \Auth::user();
+
+        $keyword = $request->input('keyword');
+
+        $query = Project::query();
+
+        if(!empty($keyword)) {
+            $query->where('content', 'LIKE', "%{$keyword}%") 
+            ->orWhere('user_id', 'LIKE', "%{$keyword}%");
+        }
+
+        $projects1 = $query->orderBy('id', 'desc')->get();
+        
+         $data1 = [
                 'user' => $user,
+                'keyword' => $keyword,
                 'projects1' => $projects1,
             ];
-        }
-        
-        // dashboardビューでそれらを表示
+
         return view('dashboard', $data1);
-    }
+            }
+        }
+
+    
     
     
    public function projectindex(Request $request)
