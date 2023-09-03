@@ -17,6 +17,7 @@ class ProjectsController extends Controller
             $user = \Auth::user();
             // ユーザとフォロー中ユーザの投稿の一覧を作成日時の降順で取得
             $projects = $user->feed_projects()->orderBy('created_at', 'desc')->paginate(10);
+            
             $data = [
                 'user' => $user,
                 'projects' => $projects,
@@ -26,6 +27,7 @@ class ProjectsController extends Controller
         // dashboardビューでそれらを表示
         return view('dashboard', $data);
     }
+    
     
     public function store(Request $request)
     {
@@ -109,7 +111,7 @@ class ProjectsController extends Controller
 
     
     
-    
+    /*使用せず
    public function projectindex(Request $request)
     {
     $search = $request->input('search');
@@ -123,4 +125,5 @@ class ProjectsController extends Controller
 
     return view('users.search', ['articles' => $articles]);
     }
+    */
 }

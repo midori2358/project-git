@@ -18,10 +18,13 @@ class MyprofileController extends Controller
     {
             $data = [];
         if (\Auth::check()) { // 認証済みの場合
+        
             // 認証済みユーザを取得 
             $user = \Auth::user();
+            
             // ユーザとフォロー中ユーザの投稿の一覧を作成日時の降順で取得
             $myprofiles = $user->myprofile()->orderBy('created_at', 'desc')->paginate(10);
+            
             $data = [
                 'myprofiles' => $myprofiles,
                 'user' => $user,
@@ -29,7 +32,12 @@ class MyprofileController extends Controller
         }
         
         // ビューでそれらを表示
-        return view('myprofiles.index', $data);
+        return view('myprofiles.index', $data);   
+
+
+        
+        
+                                                         
     }
 
     /**
@@ -87,14 +95,14 @@ class MyprofileController extends Controller
         $myprofile = Profile::findOrFail($id);
 
         // 認証済みユーザ（閲覧者）がその投稿の所有者である場合は投稿を編集
-         if (\Auth::id() === $myprofile->user_id) {
+        // if (\Auth::id() === $myprofile->user_id) {
 
 
         // メッセージ詳細ビューでそれを表示
         return view('myprofiles.show', [
             'myprofile' => $myprofile,
         ]);
-         }
+        // }
            // トップページへリダイレクトさせる
         return back();
     }

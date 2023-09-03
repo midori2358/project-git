@@ -18,8 +18,15 @@
         　  @endif
         </aside>
         <div class="sm:col-span-2 mt-4">
+         @if (isset($myprofile))
              {{-- プロフィールページへのリンク --}}                                                   
-             <a class="btn btn-primary mb-2" href="{{ route('myprofile.index',$user->id) }}">プロフィール</a>
+             <a class="btn btn-primary mb-2" href="{{ route('myprofile.show',$myprofile->id) }}">プロフィール</a>
+        @else
+            @if (Auth::id() == $user->id)
+              {{-- プロフィールページへのリンク --}}                                                 
+             <a class="btn btn-primary mb-2" href="{{ route('myprofile.create') }}">プロフィール作成</a> 
+            @endif
+        @endif
             {{-- タブ --}}  
             @include('users.navtabs')
             {{-- 投稿一覧 --}}

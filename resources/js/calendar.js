@@ -7,6 +7,7 @@ import axios from 'axios';
 
 var calendarEl = document.getElementById("calendar");
 
+
 let calendar = new Calendar(calendarEl, {
     plugins: [interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin],
     initialView: "dayGridMonth",
@@ -66,5 +67,13 @@ let calendar = new Calendar(calendarEl, {
                 alert("登録に失敗しました");
             });
     },
+    
+     eventClick: function(arg) {
+            if (confirm('削除しますか？')) {
+                arg.event.remove()
+            }
+        },
+    
+  
 });
 calendar.render();

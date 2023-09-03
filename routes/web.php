@@ -21,7 +21,7 @@ use App\Http\Controllers\MyprofileController;
 |
 */
 
-Route::get('/', [ProjectsController::class, 'index1']);
+Route::get('/', [ProjectsController::class, 'index']);
 
 Route::get('/dashboard',[ProjectsController::class, 'index1'])->middleware(['auth'])->name('dashboard');
 

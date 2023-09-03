@@ -36,14 +36,15 @@ class UsersController extends Controller
         
          // ユーザーの投稿一覧を作成日時の降順で取得
         $projects = $user->projects()->orderBy('created_at', 'desc')->paginate(10);
-
-        $email = User::pluck('email');
+        
+        // ユーザーのプロフィールを取得
+        $myprofile = $user->myprofile()->first();
         
         // ユーザ詳細ビューでそれを表示
         return view('users.show', [
             'user' => $user,
             'projects' => $projects,
-            'email' => $email,
+            'myprofile' => $myprofile
         ]);                                                 
     }   
     
